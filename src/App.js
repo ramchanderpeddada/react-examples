@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { places } from "./Data";
+import List from "./List";
 import { getImageUrl } from "./Utilis";
+import { ImageSizeContext } from "./Context";
 
 const App = () => {
   const [isLarge, setIsLarge] = useState(false);
-  const imageSize = isLarge ? 150 : 100;
+  const imageSize = isLarge ? 200 : 100;
   return (
-    <>
+    <ImageSizeContext.Provider value={imageSize}>
       <label>
         <input
           type="checkbox"
@@ -16,40 +18,9 @@ const App = () => {
         Use large images
       </label>
       <hr />
-      <List imageSize={imageSize} />
-    </>
+      <List />
+    </ImageSizeContext.Provider>
   );
 };
 
-const List = ({ place, imageSize }) => {
-  const listItems = places.map((place) => (
-    <li key={place.id}>
-      <Place place={place} imageSize={imageSize} />
-    </li>
-  ));
-  return <ul>{listItems}</ul>;
-};
-
-const Place = ({ place, imageSize }) => {
-  return (
-    <>
-      <PlaceImage place={place} imageSize={imageSize} />
-      <p>
-        <b>{place.name}</b>
-        {": " + place.description}
-      </p>
-    </>
-  );
-};
-
-const PlaceImage = ({ place, imageSize }) => {
-  return (
-    <img
-      src={getImageUrl(place)}
-      alt={place.name}
-      width={imageSize}
-      height={imageSize}
-    />
-  );
-};
 export default App;
